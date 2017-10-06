@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax call</title>
+    <style>
+		.small{
+			width: 200px;
+			height: 200px;
+		}
+		.hide{
+			display: none;
+		}
+		.show{
+		display: block;
+		}
+	</style>
+    <script>
+       window.addEventListener("load",function(){
+           document.getElementById("loading").className="hide";
+       })
+        function doAjax(){
+            document.getElementById("loading").className="show";
+            var searchTxt= document.getElementById("search").value;
+            var apiKey = "KwBO7vUGBjbL6cMYhoLOsqn47gcHYQzc";
+            var url = "http://api.giphy.com/v1/gifs/search?q="+searchTxt+"&api_key="+apiKey+"&limit=5";
+            var obj= new XMLHttpRequest(); //is predefine function we create his object this is providing for call
+            obj.open("GET",url); // method
+/*give number where is to reach */
+            obj.onreadystatechange=function()
+            {
+                if(obj.readyState==4 && obj.status==200)
+                {
+                   var object = JSON.parse(obj.responseText);
+                    var div= document.getElementById("result");
+                    
+                    document.getElementById("loading").className="hide"
+                    for(let i=0; i<object.data.length; i++){
+                        var img=document.createElement("img");
+                            img.src=object.data[i].images.original.url;
+                            img.className="small"
+                           div.appendChild(img);
+                    }
+                    
+                    //document.getElementById("result").innerHTML=obj.responseText; 
+                    
+                }
+             }
+             obj.send(null);
+    
+        }
+       
+    </script>
+</head>
+<body>
+   <h1> Welcome to Ajax Call</h1>
+   <div id="loading">
+       <img src="Wedges.gif" alt="">
+   </div>
+   <input type="text" id="search" placeholder="type to search">
+   <button onclick="doAjax()"> search</button>
+   <div id="result">
+       
+   </div>
+    
+</body>
+</html>
